@@ -1,9 +1,8 @@
 package praktikum;
 
+import org.assertj.core.api.SoftAssertions;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 
 public class BurgerTest extends BaseTest {
@@ -17,14 +16,35 @@ public class BurgerTest extends BaseTest {
         burger.addIngredient(mayonnaise);
 
         String receipt = burger.getReceipt();
+
+        SoftAssertions softly = new SoftAssertions();
         try {
-            assertThat(receipt, containsString("Чёрная булка"));
-            assertThat(receipt, containsString("Котлета"));
-            assertThat(receipt, containsString("Сыр"));
-            assertThat(receipt, containsString("Майонез"));
+            softly.assertThat(receipt).contains("Чёрная булка");
+            softly.assertThat(receipt).contains("Котлета");
+            softly.assertThat(receipt).contains("Сыр");
+            softly.assertThat(receipt).contains("Майонез");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    //Тест корректности рецепта
+    @Test
+    public void checkCorrectReceipt() {
+        burger.setBuns(bun);
+        burger.addIngredient(cutlet);
+        burger.addIngredient(cheese);
+        burger.addIngredient(mayonnaise);
+
+        String actualReceipt = burger.getReceipt();
+        String expectedReceipt = String.format(
+                "(==== Чёрная булка ====)\n" +
+                        "= Котлета =\n" +
+                        "= Сыр =\n" +
+                        "= Майонез =\n" +
+                        "(==== Чёрная булка ====)\n"+
+                        "Price: %s", burger.getPrice());
+        assertEquals("Некорректный текст рецепта", expectedReceipt, actualReceipt);
     }
 
     //Тест удаления ингредиента
