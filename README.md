@@ -9,6 +9,7 @@
 - Mockito 5.18.0
 - JUnit 4.13.2
 - Jacoco 0.8.7
+- AssertJ 3.24.2
 
 ## 🧪 Что покрыто автотестами
 - Класс Burger
